@@ -81,6 +81,44 @@ namespace Melt
               {138, 130, 112, 130}
             };
 
+        const int Luminance = 100;
+
+        byte[,] landColorTrue = {
+            {102, 88, 72, Luminance}, // 0 - BarrenRock - 0x06006d6f
+            {89, 94, 47, Luminance}, // 1 - Grassland - 0x06006d40
+            {175, 179, 178, Luminance}, // 2 - Ice - 0x06006d4b
+            {95, 94, 36, Luminance}, // 3 - LushGrass - 0x06006d06
+            {67, 47, 20, Luminance}, // 4 - MarshSparseSwamp - 0x06006d4a
+            {56, 39, 21, Luminance}, // 5 - MudRichDirt - 0x06006d46
+            {23, 17, 27, Luminance}, // 6 - ObsidianPlain - 0x06006d56
+            {112, 84, 50, Luminance}, // 7 - PackedDirt - 0x06006d48
+            {98, 80, 58, Luminance}, // 8 - PatchyDirt - 0x06006d42
+            {70, 72, 36, Luminance}, // 9 - PatchyGrassland - 0x06006d3c
+            {215, 155, 103, Luminance}, // 10 - sand-yellow - 0x06006d43
+            {148, 129, 107, Luminance}, // 11 - sand-grey - 0x06006d44
+            {183, 144, 109, Luminance}, // 12 - sand-rockStrewn - 0x06006d53
+            {151, 121, 87, Luminance}, // 13 - SedimentaryRock - 0x06006d51
+            {88, 82, 55, Luminance}, // 14 - SemiBarrenRock - 0x06006d41
+            {191, 196, 201, Luminance}, // 15 - Snow - 0x06006d47
+            {35, 76, 110, Luminance}, // 16 - WaterRunning - 0x06006d4d
+            {21, 68, 80, Luminance}, // 17 - WaterStandingFresh - 0x06006d45
+            {36, 41, 68, Luminance}, // 18 - WaterShallowSea - 0x06006d4f
+            {31, 63, 57, Luminance}, // 19 - WaterShallowStillSea - 0x06006d4c
+            {31, 35, 62, Luminance}, // 20 - WaterDeepSea - 0x06006d4e
+            {90, 95, 41, Luminance}, // 21 - forestfloor - 0x06006d49
+            {35, 76, 110, Luminance}, // 22 - FauxWaterRunning - 0x06006d4d
+            {70, 90, 66, Luminance}, // 23 - SeaSlime - 0x06006d55
+            {102, 88, 72, Luminance}, // 24 - Argila - 0x06006d6f
+            {28, 19, 23, Luminance}, // 25 - Volcano1 - 0x06006d54
+            {103, 103, 103, Luminance}, // 26 - Volcano2 - 0x06006d6a
+            {127, 164, 163, Luminance}, // 27 - BlueIce - 0x06006d50
+            {70, 72, 36, Luminance}, // 28 - Moss - 0x06006d3c
+            {65, 54, 22, Luminance}, // 29 - DarkMoss - 0x06006d3d
+            {70, 57, 56, Luminance}, // 30 - olthoi - 0x06006d3e
+            {102, 88, 72, Luminance}, // 31 - DesolateLands - 0x06006d6f
+            {112, 116, 105, Luminance}, // 32 - roads - 0x06006d3f
+        };
+
         struct landData
         {
             public ushort type;
@@ -123,7 +161,7 @@ namespace Melt
             }
         }
 
-        public void draw()
+        public void draw(bool useTrueColor = false)
         {
             Console.WriteLine("Drawing map to file...");
             Stopwatch timer = new Stopwatch();
@@ -197,7 +235,10 @@ namespace Melt
                         // Apply lighting scalar to base colors
                         for (i = 0; i < 3; i++)
                         {
-                            color = (landColor[type, i] * ColorCorrection / landColor[type, 3]) * light / 256.0;
+                            if (!useTrueColor)
+                                color = (landColor[type, i] * ColorCorrection / landColor[type, 3]) * light / 256.0;
+                            else
+                                color = (landColorTrue[type, i] * ColorCorrection / landColorTrue[type, 3]) * light / 256.0;
                             if (color > 255.0)
                                 topo[y, x, i] = 255;
                             else if (color < 0.0)
@@ -216,7 +257,7 @@ namespace Melt
                     bmp.SetPixel(y, x, Color.FromArgb(topo[y, x, 0], topo[y, x, 1], topo[y, x, 2]));
                 }
             }
-            bmp.Save($"map.png", ImageFormat.Png);
+            bmp.Save($"map{(useTrueColor ? "-true" : "")}.png", ImageFormat.Png);
 
             timer.Stop();
             Console.WriteLine("Map drawn in {0}.", timer.ElapsedMilliseconds / 1000f);
