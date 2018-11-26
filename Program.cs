@@ -36,21 +36,27 @@ namespace Melt
             //RegionConverterDM.convert("Region/130F0000 test.bin");
 
             cDatFile datFile = new cDatFile();
-            datFile.loadFromDat("./input/client_cell_1.dat");
+            datFile.loadFromDat("./input/dats/client_cell_1.dat");
+
+            ////cDatFile datFileOld = new cDatFile();
+            ////datFileOld.loadFromDat("./input/cell - 2000-08.dat");
 
             cDatFile datFileOld = new cDatFile();
-            datFileOld.loadFromDat("./input/cell - 2000-08.dat");
+            datFileOld.loadFromDat("./input/dats/DM retail/cell.dat");
 
             //datFileOld.convertSurfaceData();
             //datFile.migrateSurfaceData(datFileOld);
+            ////datFile.migrateEverything(datFileOld);
             datFile.migrateEverything(datFileOld);
             //datFile.duplicateTrainingAcademy();
             //datFile.migrateTrainingAcademy(datFileOld);
             //datFile.buildTextureIdMigrationTable(datFileOld);
-            //datFile.migrateDungeon(datFileOld, 0x02B9, 0x02B9);
+            ////datFile.migrateDungeon(datFileOld, 0x02B9, 0x02B9);
+            ////datFile.migrateDungeon(datFileOld, 0x018A, 0x018A);
 
             //datFile.writeToDat("client_cell_1.dat");
             ////datFileOld.writeToDat("client_cell_1.dat");
+            datFile.writeToDat("client_cell_1.dat");
 
             //cDatFile datFile = new cDatFile();
             //datFile.loadFromDat("./input/client_portal - ToD.dat");
@@ -60,15 +66,32 @@ namespace Melt
 
             //datFile.importNewEntries(datFileOther);
 
-            //datFile.writeToDat("client_portal.dat");
+            ////datFile.writeToDat("client_portal.dat");
+
+            //cDatFile pdatFile = new cDatFile();
+            //pdatFile.loadFromDat("./input/dats/client_portal.dat");
+
+            //cDatFile pdatFileOther = new cDatFile();
+            //pdatFileOther.loadFromDat("./input/dats/103199 beta/portal.dat");
+
+            //pdatFile.importNewEntries(pdatFileOther);
+
+            //pdatFile.writeToDat("client_portal.dat");
 
             //Console.ReadLine();
             //return;
 
             //cCellDat cellDat = new cCellDat();
-            //cellDat.loadFromDat(datFileOld);
+            //////cellDat.loadFromDat(datFileOld);
+            //cellDat.loadFromDat(datFile);
             //cMapDrawer mapDrawer = new cMapDrawer(cellDat);
             //mapDrawer.draw();
+
+            cCellDat cellDat = new cCellDat();
+            cellDat.loadFromDat(datFile);
+            cMapDrawer mapDrawer = new cMapDrawer(cellDat);
+            mapDrawer.draw();
+            mapDrawer.draw(true);
 
             //testRandomValueGenerator(5);
             //Console.ReadLine();

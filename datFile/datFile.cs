@@ -1039,6 +1039,14 @@ namespace Melt
                     //else
                     //    thisLandblockInfo.Buildings.Clear();
 
+                    //thisLandblockInfo.Objects.Clear();
+                    //if (thisLandblockInfo.Buildings.Count > 0)
+                    //{
+                    //    List<cBuildInfo> buildings = thisLandblockInfo.Buildings.Copy();
+                    //thisLandblockInfo.Buildings.Clear();
+                    //    //thisLandblockInfo.Buildings.Add(buildings[0]);
+                    //}
+
                     newFile.fileContent.SetLength(0);
                     StreamWriter writer = new StreamWriter(newFile.fileContent);
                     thisLandblockInfo.writeToDat(writer);
